@@ -14,10 +14,13 @@
       }
     }
   }
-  &__content {
+  .home,
+  .records,
+  .forms {
     height: calc(100vh - 134px);
     background-color: #eff2f5 !important;
-
+  }
+  .home {
     .ant-row {
       height: 100%;
 
