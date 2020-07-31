@@ -23,23 +23,15 @@ const SELECT_STYLE = {
 };
 
 const CheckboxWidget = ({
-  autofocus,
-  disabled,
-  formContext,
   id,
   label,
-  onBlur,
   onChange,
-  onFocus,
-  // options,
-  // placeholder,
-  readonly,
-  // required,
-  // schema,
+  required,
   value,
+  name,
   element,
   options,
-  required,
+  editMode,
 }) => {
   const [drawer, setDrawer] = useState(false);
   const dispatch = useDispatch();
@@ -49,11 +41,6 @@ const CheckboxWidget = ({
   useEffect(() => {
     setLocalOptions(options);
   }, [options]);
-  const handleChange = ({ target }) => onChange(target.checked);
-
-  const handleBlur = ({ target }) => onBlur(id, target.checked);
-
-  const handleFocus = ({ target }) => onFocus(id, target.checked);
 
   const handleDelete = () => {
     dispatch(DeleteElement({ id }));
@@ -66,7 +53,6 @@ const CheckboxWidget = ({
   };
 
   const onFinish = (values) => {
-    console.log("form data", values);
     const options = [];
     for (let i = 0; i < 50; i++) {
       if (values.hasOwnProperty(`options-${i}`)) {
@@ -85,10 +71,6 @@ const CheckboxWidget = ({
     console.log("form error", error);
   };
 
-  const onValuesChange = (changedValues, allValues) => {
-    console.log("detect change", changedValues, allValues);
-  };
-
   const renderDrawerContent = () => {
     if (element === "Checkboxes") {
       return (
@@ -98,7 +80,6 @@ const CheckboxWidget = ({
             label: label,
             required: false,
           }}
-          onValuesChange={onValuesChange}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -119,7 +100,6 @@ const CheckboxWidget = ({
               style={{ display: "flex", marginBottom: 8 }}
               align="start"
             >
-              {console.log("field", field)}
               <Form.Item
                 name={[`options-${index}`, "key"]}
                 initialValue={field.key}
@@ -164,38 +144,48 @@ const CheckboxWidget = ({
     return (
       <div className="widget_form_controls">
         <span>
-          {label}
-          {required && <Badge count={"required"} />}
+          {label}&nbsp; &nbsp;&nbsp;{required && <Badge count={"required"} />}
         </span>
-        <div>
-          <Tooltip title="edit">
-            <Button
-              onClick={handleEdit}
-              type="primary"
-              success
-              shape="circle"
-              icon={<EditOutlined />}
-            />
-          </Tooltip>
-          <Tooltip title="delete">
-            <Button
-              onClick={handleDelete}
-              shape="circle"
-              style={{ margin: "0px 10px" }}
-              icon={<DeleteOutlined />}
-              type="primary"
-              danger
-            />
-          </Tooltip>
-        </div>
+        {editMode && (
+          <div>
+            <Tooltip title="edit">
+              <Button
+                onClick={handleEdit}
+                type="primary"
+                shape="circle"
+                icon={<EditOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title="delete">
+              <Button
+                onClick={handleDelete}
+                shape="circle"
+                style={{ margin: "0px 10px" }}
+                icon={<DeleteOutlined />}
+                type="primary"
+                danger
+              />
+            </Tooltip>
+          </div>
+        )}
       </div>
     );
   };
 
   return (
     <>
-      <Form.Item className="widget_form_item" label={renderControls()}>
-        <Checkbox.Group options={options} onChange={onChange} />
+      <Form.Item
+        className="widget_form_item"
+        label={renderControls()}
+        name={label}
+        initialValue=""
+        rules={[{ required, message: `Missing ${label}` }]}
+      >
+        <Checkbox.Group
+          disabled={editMode}
+          options={options}
+          onChange={onChange}
+        />
       </Form.Item>
       <Drawer
         title="Update values"

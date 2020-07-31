@@ -89,13 +89,10 @@ const Toolbar = () => {
     },
   ];
 
-  console.log("default", defaultItems);
-
   const handleOnClick = (item) => {
     var elementOptions = {
       id: uuid(),
       element: item.key,
-      static: item.static,
       required: false,
     };
 
@@ -109,7 +106,6 @@ const Toolbar = () => {
     if (item.options) {
       elementOptions["options"] = defaultItemOptions(elementOptions["element"]);
     }
-    console.log("elemoptions", elementOptions);
     dispatch(AddElement(elementOptions));
   };
   return (
@@ -117,7 +113,11 @@ const Toolbar = () => {
       <List>
         {defaultItems &&
           defaultItems.map((item) => (
-            <ToolbarItem data={item} handleOnClick={handleOnClick} />
+            <ToolbarItem
+              key={uuid()}
+              data={item}
+              handleOnClick={handleOnClick}
+            />
           ))}
       </List>
     </div>

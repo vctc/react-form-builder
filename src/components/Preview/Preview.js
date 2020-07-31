@@ -1,6 +1,10 @@
 import React from "react";
 import UIWidgets from "../UI";
-import { Form } from "antd";
+import { Form, Button, PageHeader, Divider } from "antd";
+import uuid from "react-uuid";
+import { FirebaseContext } from "../../Firebase";
+import { connect } from "react-redux";
+import { BulkDeleteEntry } from "../../actions/formDataAction";
 
 class Preview extends React.Component {
   constructor(props) {
@@ -13,37 +17,92 @@ class Preview extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { data, url, saveUrl } = this.props;
-    // store.dispatch("load", { loadUrl: url, saveUrl, data: data || [] });
-    document.addEventListener("mousedown", this.editModeOff);
-  }
+  static contextType = FirebaseContext;
 
-  componentWillUnmount() {
-    document.removeEventListener("mousedown", this.editModeOff);
-  }
-
-  getElement(item, index) {
+  getElement(item, editMode) {
     const SortableFormElement = UIWidgets[item.element];
-    return <SortableFormElement id={item.id} key={item.id} data={item} />;
+    return (
+      <SortableFormElement
+        id={item.id}
+        key={item.id}
+        data={item}
+        editMode={editMode}
+      />
+    );
   }
+
+  handleFinish = async (values) => {
+    const entry = {
+      id: uuid(),
+      createdAt: new Date().toISOString(),
+      name: this.props.name,
+      data: values,
+    };
+    try {
+      await this.context.firebase.db.collection("/entries").add(entry);
+      this.props.bulkDeleteForm();
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
 
   render() {
-    let classes = this.props.className;
+    let classes;
     if (this.props.editMode) {
-      classes += " is-editing";
+      classes = "is-editing";
+    } else {
+      classes = "is-entry";
     }
 
     const items = this.props.data.map((item, index) =>
-      this.getElement(item, index)
+      this.getElement(item, this.props.editMode)
     );
-    console.log("items", items);
     return (
       <div className={classes}>
-        <Form layout={"vertical"}>{items}</Form>
+        <Form layout="vertical" size="large" onFinish={this.handleFinish}>
+          {!this.props.editMode && (
+            <>
+              {" "}
+              <PageHeader
+                style={{ padding: "0" }}
+                className="form-page-header"
+                title="Form name"
+                subTitle={this.props.name}
+              />
+              <PageHeader
+                style={{ padding: "0" }}
+                className="form-page-header"
+                title="Unique Id"
+                subTitle={this.props.id}
+              />
+              <Divider />
+            </>
+          )}
+          {items}
+          {!this.props.editMode && (
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+                block
+              >
+                Submit
+              </Button>
+            </Form.Item>
+          )}
+        </Form>
       </div>
     );
   }
 }
 
-export default Preview;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    bulkDeleteForm: () => {
+      return dispatch(BulkDeleteEntry());
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Preview);

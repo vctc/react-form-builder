@@ -1,4 +1,3 @@
-/* eslint-disable no-else-return */
 import React, { useState, useEffect } from "react";
 
 import {
@@ -13,18 +12,12 @@ import {
   Divider,
   Badge,
 } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import {
   UpdateElement,
   DeleteElement,
 } from "../../../actions/createFormAction";
-import uuid from "react-uuid";
 
 const SELECT_STYLE = {
   width: "100%",
@@ -32,28 +25,16 @@ const SELECT_STYLE = {
 
 const SelectWidget = ({
   autofocus,
-  disabled,
-  formContext,
   id,
-  // label,
-  multiple,
-  onBlur,
-  onChange,
-  onFocus,
   options,
   placeholder,
   required,
-  readonly,
-  name,
-  // required,
-  schema,
-  value,
   label,
   element,
+  editMode,
 }) => {
   const [drawer, setDrawer] = useState(false);
   const [selectForm] = Form.useForm();
-  console.log("selectform useform value", selectForm);
   const dispatch = useDispatch();
   const [localOptions, setLocalOptions] = useState([]);
 
@@ -62,8 +43,6 @@ const SelectWidget = ({
   }, [options]);
 
   const getPopupContainer = (node) => node.parentNode;
-
-  console.log(placeholder);
 
   const handleEdit = () => {
     setDrawer(true);
@@ -77,7 +56,6 @@ const SelectWidget = ({
   };
 
   const onFinish = (values) => {
-    console.log("form data", values);
     const options = [];
     for (let i = 0; i < 50; i++) {
       if (values.hasOwnProperty(`options-${i}`)) {
@@ -92,27 +70,8 @@ const SelectWidget = ({
     setDrawer(false);
   };
 
-  const addLocalOption = () => {
-    setLocalOptions([
-      ...localOptions,
-      { option: "", value: "", key: `dropdown_option_${uuid()}` },
-    ]);
-  };
-
-  const removeLocalOption = (key) => {
-    console.log("to remove key", key);
-    console.log("local", localOptions);
-    const removed = localOptions.filter((option) => option.key !== key);
-    console.log("removed", removed);
-    setLocalOptions(removed);
-  };
-
   const onFinishFailed = (error) => {
     console.log("form error", error);
-  };
-
-  const onValuesChange = (changedValues, allValues) => {
-    console.log("detect change", changedValues, allValues);
   };
 
   const renderDrawerContent = () => {
@@ -125,7 +84,6 @@ const SelectWidget = ({
             placeholder: placeholder,
             required: false,
           }}
-          onValuesChange={onValuesChange}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -149,7 +107,6 @@ const SelectWidget = ({
               style={{ display: "flex", marginBottom: 8 }}
               align="start"
             >
-              {console.log("field", field)}
               <Form.Item
                 name={[`options-${index}`, "key"]}
                 initialValue={field.key}
@@ -194,42 +151,48 @@ const SelectWidget = ({
     return (
       <div className="widget_form_controls">
         <span>
-          {label} {required && <Badge count={"required"} />}
+          {label}&nbsp; &nbsp;&nbsp;{required && <Badge count={"required"} />}
         </span>
-        <div>
-          <Tooltip title="edit">
-            <Button
-              onClick={handleEdit}
-              type="primary"
-              success
-              shape="circle"
-              icon={<EditOutlined />}
-            />
-          </Tooltip>
-          <Tooltip title="delete">
-            <Button
-              onClick={handleDelete}
-              shape="circle"
-              style={{ margin: "0px 10px" }}
-              icon={<DeleteOutlined />}
-              type="primary"
-              danger
-            />
-          </Tooltip>
-        </div>
+        {editMode && (
+          <div>
+            <Tooltip title="edit">
+              <Button
+                onClick={handleEdit}
+                type="primary"
+                shape="circle"
+                icon={<EditOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title="delete">
+              <Button
+                onClick={handleDelete}
+                shape="circle"
+                style={{ margin: "0px 10px" }}
+                icon={<DeleteOutlined />}
+                type="primary"
+                danger
+              />
+            </Tooltip>
+          </div>
+        )}
       </div>
     );
   };
 
   return (
     <>
-      <Form.Item className="widget_form_item" label={renderControls()}>
+      <Form.Item
+        className="widget_form_item"
+        label={renderControls()}
+        name={label}
+        initialValue=""
+        rules={[{ required, message: `Missing ${label}` }]}
+      >
         <Select
           autoFocus={autofocus}
-          disabled={disabled}
+          disabled={editMode}
           getPopupContainer={getPopupContainer}
           id={id}
-          name={name}
           placeholder={placeholder}
           style={SELECT_STYLE}
         >
@@ -254,10 +217,6 @@ const SelectWidget = ({
       </Drawer>
     </>
   );
-};
-
-SelectWidget.defaultProps = {
-  formContext: {},
 };
 
 export default SelectWidget;
