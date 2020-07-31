@@ -1,0 +1,3 @@
+export const ADD_ELEMENT = "ADD_ELEMENT";
+export const DELETE_ELEMENT = "DELETE_ELEMENT";
+export const UPDATE_ELEMENT = "UPDATE_ELEMENT";

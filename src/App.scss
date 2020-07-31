@@ -21,11 +21,53 @@
     background-color: #eff2f5 !important;
   }
   .home {
+    &__new-button {
+      height: 60px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      box-shadow: 8px 8px 8px -3px rgba(0, 0, 0, 0.1);
+      border-color: none;
+      border-style: none;
+    }
+    .widget_form_item {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      div {
+        label {
+          width: 100%;
+        }
+        .widget_form_controls {
+          display: flex;
+          justify-content: space-between;
+          width: inherit;
+        }
+      }
+    }
+    .toolbar {
+      &__list {
+        cursor: pointer;
+        text-align: center;
+        display: block;
+        border: 1px dashed grey !important;
+        margin: 5px 0;
+      }
+    }
+    &__plus-icon {
+      font-size: 15px;
+      color: #001628;
+    }
     .ant-row {
       height: 100%;
 
-      .ant-col {
+      .ant-card {
+        width: 100%;
+      }
+
+      .home-col {
         border: 1px dashed lightgrey;
+        height: 100%;
+        overflow-x: scroll;
       }
     }
   }
