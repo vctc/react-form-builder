@@ -1,0 +1,124 @@
+.app {
+  height: 100vh;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    &-logo {
+      width: 200px;
+      height: 100%;
+
+      img {
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+  .home,
+  .records,
+  .forms {
+    height: calc(100vh - 134px);
+    background-color: #eff2f5 !important;
+  }
+  .result {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    h4 {
+      flex: 1;
+    }
+    span {
+      flex: 1;
+      text-align: center;
+    }
+  }
+  .home {
+    &__new-button {
+      height: 60px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      box-shadow: 8px 8px 8px -3px rgba(0, 0, 0, 0.1);
+      border-color: none;
+      border-style: none;
+    }
+
+    &__forms-list {
+      text-align: center;
+      margin-left: 8px;
+      .ant-card {
+        cursor: pointer;
+        transition: all 0.5s ease;
+        &:hover {
+          border-radius: 10px;
+          border: 1px solid rgb(214, 209, 209);
+          box-shadow: 8px 8px 8px -3px rgba(0, 0, 0, 0.1);
+        }
+      }
+    }
+
+    .selected {
+      .ant-card-body {
+        background-color: #40aaff;
+        color: white;
+      }
+    }
+    .is-entry {
+      form {
+        margin: 0 50px;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+      }
+    }
+    .is-editing {
+      .widget_form_item {
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        div {
+          label {
+            width: 100%;
+          }
+          .widget_form_controls {
+            display: flex;
+            justify-content: space-between;
+            width: inherit;
+          }
+        }
+      }
+    }
+    .toolbar {
+      &__list {
+        cursor: pointer;
+        text-align: center;
+        display: block;
+        border: 1px dashed grey !important;
+        margin: 5px 0;
+      }
+    }
+    &__plus-icon {
+      font-size: 15px;
+      color: #001628;
+    }
+    .ant-row {
+      height: 100%;
+
+      .ant-card {
+        width: 100%;
+      }
+
+      .home-col {
+        border: 1px dashed lightgrey;
+        height: 100%;
+        overflow-x: scroll;
+      }
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    display: block;
+    color: white !important;
+    background-color: rgb(61, 60, 60) !important;
+  }
+}
