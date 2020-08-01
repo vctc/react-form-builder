@@ -185,7 +185,7 @@ const SelectWidget = ({
         className="widget_form_item"
         label={renderControls()}
         name={label}
-        initialValue=""
+        initialValue={null}
         rules={[{ required, message: `Missing ${label}` }]}
       >
         <Select

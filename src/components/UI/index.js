@@ -27,6 +27,7 @@ class TextInput extends React.Component {
 
 class Dropdown extends React.Component {
   render() {
+    console.log("this.props", this.props.data);
     const props = {};
     props.id = this.props.data.id;
     props.name = this.props.data.field_name;

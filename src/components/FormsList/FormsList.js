@@ -2,14 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { List, Card } from "antd";
 import { FirebaseContext } from "../../Firebase";
 import { useDispatch } from "react-redux";
-import { BulkAdd } from "../../actions/createFormAction";
 import { withRouter } from "react-router-dom";
 import { BulkAddEntry } from "../../actions/formDataAction";
 import uuid from "react-uuid";
 
-function FormsList({ location }) {
+function FormsList({ location, handleUpdate }) {
   const { firebase } = useContext(FirebaseContext);
   const [forms, setForms] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,10 +24,11 @@ function FormsList({ location }) {
   };
 
   const handleFormClick = (data) => {
+    setSelected(data.id);
     if (location.pathname === "/forms") {
       dispatch(BulkAddEntry(data));
     } else {
-      dispatch(BulkAdd(data.data));
+      handleUpdate(data, true);
     }
   };
 
@@ -37,13 +38,16 @@ function FormsList({ location }) {
     });
     setForms(formsFb);
   };
+
   return (
     <List>
       {forms.map((form) => (
         <List.Item
           key={uuid()}
           onClick={() => handleFormClick(form)}
-          className="home__forms-list"
+          className={`home__forms-list ${
+            form.id === selected ? "selected" : ""
+          }`}
         >
           <Card size="default">{form.name}</Card>
         </List.Item>

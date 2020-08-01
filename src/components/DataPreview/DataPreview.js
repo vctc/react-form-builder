@@ -11,7 +11,7 @@ const DataPreview = () => {
   };
 
   const renderObject = (data) => {
-    if (data === "") return "-";
+    if (data === "" || data === null) return "-";
     if (typeof data === "object") {
       return data.join(" , ");
     } else return data;

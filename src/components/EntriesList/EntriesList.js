@@ -12,6 +12,7 @@ import uuid from "react-uuid";
 function EntriesList({ location }) {
   const { firebase } = useContext(FirebaseContext);
   const [entries, setEntries] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,6 +27,7 @@ function EntriesList({ location }) {
   };
 
   const handleFormClick = (data) => {
+    setSelected(data.id);
     dispatch(AddEntries(data));
   };
 
@@ -41,7 +43,9 @@ function EntriesList({ location }) {
         <List.Item
           key={uuid()}
           onClick={() => handleFormClick(form)}
-          className="home__forms-list"
+          className={`home__forms-list ${
+            form.id === selected ? "selected" : ""
+          }`}
         >
           <Card size="default">
             <span> {form.name}</span> <Divider />

@@ -55,6 +55,13 @@
         }
       }
     }
+
+    .selected {
+      .ant-card-body {
+        background-color: #40aaff;
+        color: white;
+      }
+    }
     .is-entry {
       form {
         margin: 0 50px;

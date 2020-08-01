@@ -3,8 +3,10 @@ import { Row, Col, Divider } from "antd";
 import Preview from "../../components/Preview/Preview";
 import FormsList from "../../components/FormsList/FormsList";
 import { useSelector } from "react-redux";
+
 const Forms = () => {
   const formData = useSelector((state) => state.formData);
+
   return (
     <div className="home">
       <Row gutter={16}>

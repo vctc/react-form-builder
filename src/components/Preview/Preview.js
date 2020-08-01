@@ -5,6 +5,7 @@ import uuid from "react-uuid";
 import { FirebaseContext } from "../../Firebase";
 import { connect } from "react-redux";
 import { BulkDeleteEntry } from "../../actions/formDataAction";
+import { openNotification } from "../../Helpers";
 
 class Preview extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class Preview extends React.Component {
     try {
       await this.context.firebase.db.collection("/entries").add(entry);
       this.props.bulkDeleteForm();
+      openNotification("Form data submitted successfully", "");
     } catch (err) {
       console.log("error", err);
     }

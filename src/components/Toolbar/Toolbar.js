@@ -10,36 +10,36 @@ const defaultItemOptions = (element) => {
     case "Dropdown":
       return [
         {
-          value: "1",
-          label: "Red",
+          value: "Value 1",
+          label: "Option 1",
           key: `dropdown_option_${uuid()}`,
         },
         {
-          value: "2",
-          label: "Green",
+          value: "Value 2",
+          label: "Option 2",
           key: `dropdown_option_${uuid()}`,
         },
         {
-          value: "3",
-          label: "Blue",
+          value: "Value 3",
+          label: "Option 3",
           key: `dropdown_option_${uuid()}`,
         },
       ];
     case "Checkboxes":
       return [
         {
-          value: "cricket",
-          label: "Playing Cricket",
+          value: "value 1",
+          label: "label 1",
           key: `checkboxes_option_${uuid()}`,
         },
         {
-          value: "Football",
-          label: "Playing Football",
+          value: "Value 2",
+          label: "Label 2",
           key: `checkboxes_option_${uuid()}`,
         },
         {
-          value: "Dance",
-          label: "Dancing",
+          value: "Value 3",
+          label: "Label 3",
           key: `checkboxes_option_${uuid()}`,
         },
       ];
@@ -58,7 +58,7 @@ const Toolbar = () => {
       field_name: "dropdown_",
       label: "Dropdown",
       options: [],
-      placeholder: "select favourite color",
+      placeholder: "select options",
     },
 
     {
